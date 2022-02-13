@@ -1,0 +1,26 @@
+.keyboard {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.keyboard-row {
+    margin: auto;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+.keyboard-key {
+    cursor: pointer;
+    border-radius: 5px;
+    width: fit-content;
+    height: 40px;
+    padding: 10px 15px;
+    background-color: grey;
+}
+.keyboard-key p {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 0px;
+}

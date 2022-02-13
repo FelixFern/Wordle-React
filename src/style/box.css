@@ -1,0 +1,29 @@
+.box {
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+.box p {
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 0px;
+}
+.box-char {
+    width: 65px;
+    height: 65px;
+    border: 1px solid white;
+}
+.G {
+    background-color: greenyellow;
+}
+
+.Y {
+    background-color: yellow;
+}
+
+.N {
+    background-color: grey;
+}
+
