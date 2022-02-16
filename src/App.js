@@ -4,6 +4,7 @@ import './App.css';
 import Box from './components/Box'
 import React, { useState, useEffect } from 'react'
 
+var wordList = require('word-list-json');
 let word_list = ['', '', '', '', '']
 let color_list = ['', '', '', '', '']
 
@@ -11,6 +12,7 @@ function App() {
 	useEffect(() => {
 		document.title = ("Wordle Recreated")
 	},[])
+	console.log(wordList.lengths)
 	const [currentWord, setWord] = useState([])
 	const [currentLine, setLine] = useState(0)
 
