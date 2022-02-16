@@ -86,17 +86,20 @@ function App() {
 													let color = ""
 													currentWord.map((word, i) => {
 														color = ""
+														let available = false
 														for(let j = 0; j < 5; j++) {
-															let available = false
 															if(word == guessing_word[j].toUpperCase() && i == j) {
 																color = "G"
+																console.log(word + "x" + guessing_word[j] + "xG")
 																break
 															}
 															else if(word == guessing_word[j].toUpperCase() && i != j) {
 																available = true
+																console.log(word + "x" + guessing_word[j] + "xY")
 																color = "Y"
 															}
 															else if(available == false){
+																console.log(word + "x" + guessing_word[j] + "xN")
 																color = "N"
 															}
 														}
