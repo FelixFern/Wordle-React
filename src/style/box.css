@@ -30,6 +30,7 @@
     background-color: #3a3a3c;
 }
 
+
 @keyframes zoom {
     0% {
         transform: scale(0);

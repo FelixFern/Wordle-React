@@ -17,10 +17,21 @@
     width: fit-content;
     height: 40px;
     padding: 10px 15px;
-    background-color: grey;
 }
 .keyboard-key p {
     font-weight: bold;
     font-size: 20px;
     line-height: 0px;
+}
+#n {
+    background-color: grey;
+}
+#N { 
+    background-color: #3a3a3c;
+}
+#g {
+    background-color: #538D4E;
+}
+#y {
+    background-color: #b59f3b;
 }

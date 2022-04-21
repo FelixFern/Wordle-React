@@ -7,21 +7,60 @@ import React, { useState, useEffect } from 'react'
 var wordList = require('word-list-json');
 let word_list = ['', '', '', '', '']
 let color_list = ['', '', '', '', '']
+let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
+					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
+					]
 
 function App() {
 	useEffect(() => {
 		document.title = ("Wordle Recreated")
 	},[])
-	console.log(wordList.lengths)
 	const [currentWord, setWord] = useState([])
 	const [currentLine, setLine] = useState(0)
 
 	const guessing_word = "tests"
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
+	
+
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
+
+
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
-    
+
+	function setKeyboardColor(alphabet) {
+		let bool = false
+		let row = 0
+		let ind = -1
+		firstRow.forEach((n, i) => {
+			if(n.toUpperCase() == alphabet) {
+				bool = true
+				row = 0
+				ind = i
+				// console.log(fRowColor)
+			}
+		})
+		secondRow.forEach((n, i) => {
+			if(n.toUpperCase() == alphabet) {
+				bool = true
+				row = 1
+				ind = i
+				// console.log(sRowColor)
+			}
+		})
+		thirdRow.forEach((n, i) => {
+			if(n.toUpperCase() == alphabet) {
+				bool = true
+				row = 2
+				ind = i
+				// console.log(tRowColor)
+			}
+		})
+		return {bool, ind, row}
+	}
+
+
 	return (
 		<div className="App">
 			<header>
@@ -40,7 +79,7 @@ function App() {
 						<div className='keyboard-row'>
 							{firstRow.map((element) => {
 								return (
-									<div className='keyboard-key' key={firstRow.indexOf(element)} onClick={
+									<div className='keyboard-key' id={keyboardColor[0][firstRow.indexOf(element)]} key={firstRow.indexOf(element)} onClick={
 										() => {
 											if(currentLine < 5 && currentWord.length < 5) {
 												setWord((word) => [...word, element.toUpperCase()])
@@ -55,7 +94,7 @@ function App() {
 						<div className='keyboard-row'>
 							{secondRow.map((element) => {
 								return (
-									<div className='keyboard-key' key={secondRow.indexOf(element)} onClick={
+									<div className='keyboard-key' id={keyboardColor[1][secondRow.indexOf(element)]} key={secondRow.indexOf(element)} onClick={
 										() => {
 											if(currentLine < 5 && currentWord.length < 5) {
 												setWord((word) => [...word, [element.toUpperCase()]])
@@ -70,7 +109,7 @@ function App() {
 						<div className='keyboard-row'>
 							{thirdRow.map((element) => {
 								return (
-									<div className='keyboard-key' key={thirdRow.indexOf(element)} onClick={
+									<div className='keyboard-key' id={keyboardColor[2][thirdRow.indexOf(element)]} key={thirdRow.indexOf(element)} onClick={
 										() => {
 											if(element != "enter" && element != "<") {
 												if(currentLine < 5 && currentWord.length < 5) {
@@ -83,6 +122,9 @@ function App() {
 												setWord((word) => [...word_copy])
 											}
 											else if(element == "enter") {
+												console.log("Row 1 : " + keyboardColor[0])
+												console.log("Row 2 : " + keyboardColor[1])
+												console.log("Row 3 : " + keyboardColor[2])
 												if(currentWord.length == 5) {
 													let colors = ""
 													let color = ""
@@ -92,16 +134,31 @@ function App() {
 														for(let j = 0; j < 5; j++) {
 															if(word == guessing_word[j].toUpperCase() && i == j) {
 																color = "G"
-																console.log(word + "x" + guessing_word[j] + "xG")
+																let {bool, row, ind} = setKeyboardColor(word)
+																if(bool) {
+																	keyboardColor[row][ind] = "g"
+																}
+																console.log(keyboardColor)
+																// console.log(word + "x" + guessing_word[j] + "xG")
 																break
 															}
 															else if(word == guessing_word[j].toUpperCase() && i != j) {
 																available = true
-																console.log(word + "x" + guessing_word[j] + "xY")
+																let {bool, row, ind} = setKeyboardColor(word)
+																if(bool && keyboardColor[row][ind] != "g") {
+																	keyboardColor[row][ind] = "y"
+																}
+																// console.log(word + "x" + guessing_word[j] + "xY")
+																console.log(keyboardColor)
 																color = "Y"
 															}
 															else if(available == false){
-																console.log(word + "x" + guessing_word[j] + "xN")
+																let {bool, row, ind} = setKeyboardColor(word)
+																if(bool) {
+																	keyboardColor[row][ind] = "N"
+																}
+																console.log(keyboardColor)
+																// console.log(word + "x" + guessing_word[j] + "xN")
 																color = "N"
 															}
 														}
