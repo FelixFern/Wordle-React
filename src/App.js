@@ -1,8 +1,10 @@
 import './style/style.css';
 import './style/keyboard.css'
 import './App.css';
+
 import Box from './components/Box'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import useState from 'react-usestateref'
 
 var wordList = require('word-list-json');
 let word_list = ['', '', '', '', '']
@@ -15,13 +17,16 @@ let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 function App() {
 	useEffect(() => {
 		document.title = ("Wordle Recreated")
-		window.addEventListener('keypress', e => {
-			keyboardInput(e.key)
-			console.log(e.key)
+		window.addEventListener('keydown', e => {
+			if((e.keyCode >= 65 && e.keyCode <= 90) || e.key == "Enter" || e.key == "Backspace") {
+				keyboardInput(e.key, currentWord)
+				console.log(e.key)
+			}
+			// console.log(e.key)
 		});
 	},[])
-	const [currentWord, setWord] = useState([])
-	const [currentLine, setLine] = useState(0)
+	const [currentWord, setWord, currentWordRef] = useState([])
+	const [currentLine, setLine, currentLineRef] = useState(0)
 
 	const guessing_word = "tests"
 
@@ -30,10 +35,59 @@ function App() {
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
 
 	function keyboardInput(alphabet) {
-		if(alphabet != "Enter" && alphabet != "<") {
-			if(currentLine < 5 && currentWord.length < 5) {
+		if(alphabet != "Enter" && alphabet != "Backpace") {
+			console.log(currentWordRef)
+			if(currentLine < 5 && currentWordRef.current.length < 5) {
 				setWord((word) => [...word, [alphabet.toUpperCase()]])
 			}
+		} else if(alphabet == "Enter") {
+			if(currentWordRef.current.length == 5) {
+				let colors = ""
+				let color = ""
+				currentWordRef.current.map((word, i) => {
+					color = ""
+					let available = false
+					for(let j = 0; j < 5; j++) {
+						if(word == guessing_word[j].toUpperCase() && i == j) {
+							color = "G"
+							let {bool, row, ind} = setKeyboardColor(word)
+							if(bool) {
+								keyboardColor[row][ind] = "g"
+							}
+							console.log(keyboardColor)
+							// console.log(word + "x" + guessing_word[j] + "xG")
+							break
+						}
+						else if(word == guessing_word[j].toUpperCase() && i != j) {
+							available = true
+							let {bool, row, ind} = setKeyboardColor(word)
+							if(bool && keyboardColor[row][ind] != "g") {
+								keyboardColor[row][ind] = "y"
+							}
+							// console.log(word + "x" + guessing_word[j] + "xY")
+							console.log(keyboardColor)
+							color = "Y"
+						}
+						else if(available == false){
+							let {bool, row, ind} = setKeyboardColor(word)
+							if(bool) {
+								keyboardColor[row][ind] = "N"
+							}
+							console.log(keyboardColor)
+							// console.log(word + "x" + guessing_word[j] + "xN")
+							color = "N"
+						}
+					}
+					colors += color
+				})
+				word_list[currentLineRef.current] = currentWordRef.current
+				color_list[currentLineRef.current] = colors
+				colors = ""
+				setLine(currentLineRef.current + 1)											
+				setWord(word => [])
+			}
+		} else if (alphabet == "Backspace") {
+
 		}
 	}
 	function setKeyboardColor(alphabet) {
@@ -174,7 +228,7 @@ function App() {
 													color_list[currentLine] = colors
 													colors = ""
 													setLine(currentLine + 1)											
-													setWord(word => [] )
+													setWord(word => [])
 												}
 											}
 										}
