@@ -1,7 +1,7 @@
 {
   "name": "wordle",
   "version": "0.1.0",
-  "homepage": "https://felixfern.github.io/wordle-recreated",
+  "homepage": "https://felixfern.github.io/wordle-react",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
