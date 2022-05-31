@@ -1,0 +1,11 @@
+.alert-parent {
+    background-color: white;
+    width: fit-content;
+    vertical-align: auto;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.alert-parent h2 {
+    line-height: 0;
+    font-size: 18px;
+}

@@ -5,6 +5,7 @@ import './App.css';
 import Box from './components/Box'
 import React, { useEffect } from 'react'
 import useState from 'react-usestateref'
+import Alert from './components/Alert';
 
 var checkWord = require('check-if-word'), words = checkWord('en')
 
@@ -13,6 +14,7 @@ let color_list = ['', '', '', '', '']
 let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
+
 
 function App() {
 	useEffect(() => {
@@ -26,14 +28,17 @@ function App() {
 		});
 	},[])
 	
+
+
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
-
+	const [popupToggle, setPopup, popupToggleRef] = useState(false)
 	const guessing_word = "tests"
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
+	const popupText = "Not in word list"
 
 	function resetWordle() {
 		keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
@@ -42,15 +47,10 @@ function App() {
 		word_list = ['', '', '', '', '']
 		color_list = ['', '', '', '', '']
 	}
-
-	function enterClicked() {
-		// for(let i = 0; i < englishWordList.length; i++) {
-		// 	console.log(englishWordList[i])
-		// 	if(currentWordRef == englishWordList[i]){
-		// 		isEnglishWord = true
-		// 		break
-		// 	}
-		// }
+	function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms))
+	}
+	async function enterClicked() {
 		if(currentWordRef.current.length == 5 && words.check(currentWordRef.current.join(''))) {
 			let colors = ""
 			let color = ""
@@ -93,7 +93,9 @@ function App() {
 			setLine(currentLineRef.current + 1)											
 			setWord(word => [])
 		} else {
-			console.log(currentWord + "is not an english word")
+			setPopup(true)
+			await sleep(5000)
+			setPopup(false)
 		}
 	}
 
@@ -152,6 +154,11 @@ function App() {
 			<header>
 				<h1>WORDLE</h1>
 			</header>
+			<div className={popupToggle ? "alert alert-show" : "alert"}>
+				<Alert
+					text = {popupText}
+				></Alert>
+			</div>
 			<div className='component'>
 				<div className='text-box'>
 					<Box character={currentLine == 0 ? currentWord : word_list[0]} state={currentLine > 0 ? true : false} color={color_list[0]}></Box>
