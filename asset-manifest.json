@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/wordle-recreated/static/css/main.364e28e4.css",
+    "main.js": "/wordle-recreated/static/js/main.4b9c5ab1.js",
+    "static/js/787.e01666d6.chunk.js": "/wordle-recreated/static/js/787.e01666d6.chunk.js",
+    "index.html": "/wordle-recreated/index.html",
+    "main.364e28e4.css.map": "/wordle-recreated/static/css/main.364e28e4.css.map",
+    "main.4b9c5ab1.js.map": "/wordle-recreated/static/js/main.4b9c5ab1.js.map",
+    "787.e01666d6.chunk.js.map": "/wordle-recreated/static/js/787.e01666d6.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.364e28e4.css",
+    "static/js/main.4b9c5ab1.js"
+  ]
+}
