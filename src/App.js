@@ -6,18 +6,17 @@ import Box from './components/Box'
 import React, { useEffect } from 'react'
 import useState from 'react-usestateref'
 
-var englishWord = require('word-list-json');
+var checkWord = require('check-if-word'), words = checkWord('en')
+
 let word_list = ['', '', '', '', '']
 let color_list = ['', '', '', '', '']
 let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
-					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']
-					]
-// const englishWordList = englishWord()
+					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
 
 function App() {
 	useEffect(() => {
-		// console.log(englishWord.length(5))
+		// console.log(englishWordList[0])
 		document.title = ("Wordle Recreated")
 		window.addEventListener('keydown', e => {
 			if((e.keyCode >= 65 && e.keyCode <= 90) || e.key == "Enter" || e.key == "Backspace") {
@@ -26,6 +25,7 @@ function App() {
 			// console.log(e.key)
 		});
 	},[])
+	
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
 
@@ -35,8 +35,23 @@ function App() {
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
 
+	function resetWordle() {
+		keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
+					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
+					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
+		word_list = ['', '', '', '', '']
+		color_list = ['', '', '', '', '']
+	}
+
 	function enterClicked() {
-		if(currentWordRef.current.length == 5) {
+		// for(let i = 0; i < englishWordList.length; i++) {
+		// 	console.log(englishWordList[i])
+		// 	if(currentWordRef == englishWordList[i]){
+		// 		isEnglishWord = true
+		// 		break
+		// 	}
+		// }
+		if(currentWordRef.current.length == 5 && words.check(currentWordRef.current.join(''))) {
 			let colors = ""
 			let color = ""
 			currentWordRef.current.map((word, i) => {
@@ -49,7 +64,6 @@ function App() {
 						if(bool) {
 							keyboardColor[row][ind] = "g"
 						}
-						console.log(keyboardColor)
 						// console.log(word + "x" + guessing_word[j] + "xG")
 						break
 					}
@@ -60,7 +74,6 @@ function App() {
 							keyboardColor[row][ind] = "y"
 						}
 						// console.log(word + "x" + guessing_word[j] + "xY")
-						console.log(keyboardColor)
 						color = "Y"
 					}
 					else if(available == false){
@@ -68,7 +81,6 @@ function App() {
 						if(bool) {
 							keyboardColor[row][ind] = "N"
 						}
-						console.log(keyboardColor)
 						// console.log(word + "x" + guessing_word[j] + "xN")
 						color = "N"
 					}
@@ -80,6 +92,8 @@ function App() {
 			colors = ""
 			setLine(currentLineRef.current + 1)											
 			setWord(word => [])
+		} else {
+			console.log(currentWord + "is not an english word")
 		}
 	}
 
@@ -88,6 +102,7 @@ function App() {
 		word_copy.splice(currentWordRef.current.length - 1, 1)
 		setWord((word) => [...word_copy])
 	}
+
 	function keyboardInput(alphabet) {
 		if(alphabet != "Enter" && alphabet != "Backspace") {
 			console.log(currentWordRef)
@@ -100,6 +115,7 @@ function App() {
 			backspaceClicked()
 		}
 	}
+
 	function setKeyboardColor(alphabet) {
 		let bool = false
 		let row = 0
