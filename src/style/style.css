@@ -32,6 +32,21 @@ header {
     transform: 0.8s;
     opacity: 1;
 }
+.darken {
+    opacity: 0.5;
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+}
+.finish {
+    display: none;
+    z-index: 100;
+    position: absolute;
+    top: 0%;
+}
+.finish-show {
+    display: block;
+}
 .component {
     padding-top: 60px;
     position: absolute;

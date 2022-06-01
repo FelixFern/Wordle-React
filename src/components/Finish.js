@@ -1,9 +1,10 @@
 import React from 'react'
+import '../style/finish.css'
 
 function Finish(props) {
     return (
-        <div>
-            Finish
+        <div className='finish-parent'>
+            <h1>WORK IN PROGRESS</h1>
         </div>
     )
 }

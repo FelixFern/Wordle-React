@@ -1,12 +1,12 @@
 import './style/style.css';
 import './style/keyboard.css'
-import './App.css';
 
 import Box from './components/Box'
 import React, { useEffect } from 'react'
 import useState from 'react-usestateref'
 import Alert from './components/Alert';
 import wordList from './words.json'
+import Finish from './components/Finish';
 
 
 var checkWord = require('check-if-word'), words = checkWord('en')
@@ -44,6 +44,7 @@ function App() {
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
 	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
+	const [finishToggle, setFinish, finishToggleRef] = useState(false)
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
@@ -104,11 +105,13 @@ function App() {
 			setWord(word => [])
 			if (currentLineRef.current == 5) {
 				setPopup({show : true, text : guessing_word})
+				await sleep(5000)
+				setFinish(true)
 			}
 		} else if (!words.check(currentWordRef.current.join('')) && currentLineRef.current != 5) {
 			console.log(currentLineRef.current == 5)
 			setPopup({show : true, text : "Not in word list"})
-			await sleep(5000)
+			await sleep(2500)
 			setPopup({show : false, text : "Not in word list"})
 		} 
 	}
@@ -171,6 +174,16 @@ function App() {
 				<Alert
 					text = {popupToggle.text}
 				></Alert>
+			</div>
+			<div className={finishToggle ? "finish finish-show" : "finish"}>
+				<div className='darken' onClick={
+					() => {
+						setFinish(false)
+					}
+				}></div>
+				<Finish
+					
+				></Finish>
 			</div>
 			<div className='component'>
 				<div className='text-box'>
