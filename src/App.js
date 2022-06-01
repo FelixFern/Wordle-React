@@ -6,6 +6,8 @@ import Box from './components/Box'
 import React, { useEffect } from 'react'
 import useState from 'react-usestateref'
 import Alert from './components/Alert';
+import wordList from './words.json'
+
 
 var checkWord = require('check-if-word'), words = checkWord('en')
 
@@ -17,6 +19,7 @@ let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 
 
 function App() {
+	let guessing_word = ''
 	useEffect(() => {
 		// console.log(englishWordList[0])
 		document.title = ("Wordle Recreated")
@@ -26,19 +29,25 @@ function App() {
 			}
 			// console.log(e.key)
 		});
-	},[])
-	
+		const timeElapsed = Date.now();
+		const today = new Date(timeElapsed);
 
+		wordList.map(word => {
+			// const guessing_word = 
+			if(word.Date == today.toLocaleDateString()) {
+				guessing_word = word.Word
+				console.log(guessing_word)
+			} 
+		});
+	},[])
 
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
-	const [popupToggle, setPopup, popupToggleRef] = useState(false)
-	const guessing_word = "tests"
+	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
-	const popupText = "Not in word list"
 
 	function resetWordle() {
 		keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
@@ -47,6 +56,7 @@ function App() {
 		word_list = ['', '', '', '', '']
 		color_list = ['', '', '', '', '']
 	}
+
 	function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms))
 	}
@@ -92,11 +102,15 @@ function App() {
 			colors = ""
 			setLine(currentLineRef.current + 1)											
 			setWord(word => [])
-		} else {
-			setPopup(true)
+			if (currentLineRef.current == 5) {
+				setPopup({show : true, text : guessing_word})
+			}
+		} else if (!words.check(currentWordRef.current.join('')) && currentLineRef.current != 5) {
+			console.log(currentLineRef.current == 5)
+			setPopup({show : true, text : "Not in word list"})
 			await sleep(5000)
-			setPopup(false)
-		}
+			setPopup({show : false, text : "Not in word list"})
+		} 
 	}
 
 	function backspaceClicked() {
@@ -107,7 +121,6 @@ function App() {
 
 	function keyboardInput(alphabet) {
 		if(alphabet != "Enter" && alphabet != "Backspace") {
-			console.log(currentWordRef)
 			if(currentLine < 5 && currentWordRef.current.length < 5) {
 				setWord((word) => [...word, [alphabet.toUpperCase()]])
 			}
@@ -154,9 +167,9 @@ function App() {
 			<header>
 				<h1>WORDLE</h1>
 			</header>
-			<div className={popupToggle ? "alert alert-show" : "alert"}>
+			<div className={popupToggle.show ? "alert alert-show" : "alert"}>
 				<Alert
-					text = {popupText}
+					text = {popupToggle.text}
 				></Alert>
 			</div>
 			<div className='component'>
