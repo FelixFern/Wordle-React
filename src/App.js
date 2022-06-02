@@ -31,7 +31,7 @@ function App() {
 		});
 		const timeElapsed = Date.now();
 		const today = new Date(timeElapsed);
-
+		console.log(words)
 		wordList.map(word => {
 			// const guessing_word = 
 			if(word.Date == today.toLocaleDateString()) {
@@ -169,6 +169,9 @@ function App() {
 		<div className="App">
 			<header>
 				<h1>WORDLE</h1>
+				<div className='setting'>
+
+				</div>
 			</header>
 			<div className={popupToggle.show ? "alert alert-show" : "alert"}>
 				<Alert

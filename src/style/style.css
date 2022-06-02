@@ -63,3 +63,15 @@ header {
     margin: auto;
     display: flex;
 }
+
+@media only screen and (max-width: 600px) {
+    .finish-parent {
+        width: 80vw;
+    }
+    .component {
+        padding-top: 20px;
+    }
+    .text-box {
+        padding-bottom: 20px;
+    }
+}

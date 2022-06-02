@@ -35,3 +35,21 @@
 #y {
     background-color: #b59f3b;
 }
+
+@media only screen and (max-width: 600px) {
+    .keyboard-key {
+        height: 30px;
+        padding: 8px 10px;
+    }
+    .keyboard-key p {
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 0px;
+    }
+    .keyboard-row {
+        column-gap: 5px;
+    }
+    .keyboard {
+        row-gap: 5px;
+    }
+}
