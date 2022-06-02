@@ -43,6 +43,7 @@
 @media only screen and (max-width: 600px) {
     .box p {
         font-size: 20px;
+        line-height: 15px;
     }
     .box-char {
         text-align: center;

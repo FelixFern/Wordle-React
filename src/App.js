@@ -1,6 +1,7 @@
 import './style/style.css';
 import './style/keyboard.css'
 
+import { MdLeaderboard, MdLightMode } from "react-icons/md";
 import Box from './components/Box'
 import React, { useEffect } from 'react'
 import useState from 'react-usestateref'
@@ -43,8 +44,11 @@ function App() {
 
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
+	const [solved, setSolved, solvedRef] = useState(false) 
 	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
+	const [darkMode, setDarkMode, darkModeToggle] = useState(true)
+
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
@@ -56,6 +60,8 @@ function App() {
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
 		word_list = ['', '', '', '', '']
 		color_list = ['', '', '', '', '']
+		setWord(word => [])
+		setLine(0)
 	}
 
 	function sleep(ms) {
@@ -98,11 +104,20 @@ function App() {
 				}
 				colors += color
 			})
+			
 			word_list[currentLineRef.current] = currentWordRef.current
 			color_list[currentLineRef.current] = colors
-			colors = ""
 			setLine(currentLineRef.current + 1)											
 			setWord(word => [])
+			if(colors == "GGGGG") {
+				setSolved(true)
+				setPopup({show : true, text : "Nice job!"})
+				await sleep(2500)
+				setPopup({show : false, text : "Nice job!"})
+				await sleep(1000)
+				setFinish(true)
+			}
+			colors = ""
 			if (currentLineRef.current == 5) {
 				setPopup({show : true, text : guessing_word})
 				await sleep(5000)
@@ -112,7 +127,7 @@ function App() {
 			console.log(currentLineRef.current == 5)
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
-			setPopup({show : false, text : "Not in word list"})
+			setPopup({show : false, text : ""})
 		} 
 	}
 
@@ -123,7 +138,7 @@ function App() {
 	}
 
 	function keyboardInput(alphabet) {
-		if(alphabet != "Enter" && alphabet != "Backspace") {
+		if(alphabet != "Enter" && alphabet != "Backspace" && solvedRef.current == false) {
 			if(currentLine < 5 && currentWordRef.current.length < 5) {
 				setWord((word) => [...word, [alphabet.toUpperCase()]])
 			}
@@ -168,9 +183,18 @@ function App() {
 	return (
 		<div className="App">
 			<header>
-				<h1>WORDLE</h1>
+				<h1 className='title'>WORDLE</h1>
 				<div className='setting'>
-
+					<i><MdLeaderboard onClick={() => {
+						console.log(finishToggle)
+						if(finishToggle) {setFinish(false)}
+						else {setFinish(true)}
+					}}></MdLeaderboard></i>
+					<i><MdLightMode onClick={() => {
+						if(darkMode) {setFinish(false)}
+						else {setFinish(true)}
+					}}>
+						</MdLightMode></i>
 				</div>
 			</header>
 			<div className={popupToggle.show ? "alert alert-show" : "alert"}>
@@ -203,7 +227,7 @@ function App() {
 								return (
 									<div className='keyboard-key' id={keyboardColor[0][firstRow.indexOf(element)]} key={firstRow.indexOf(element)} onClick={
 										() => {
-											if(currentLine < 5 && currentWord.length < 5) {
+											if(currentLine < 5 && currentWord.length < 5 && solved == false) {
 												setWord((word) => [...word, element.toUpperCase()])
 											}
 										}
@@ -218,7 +242,7 @@ function App() {
 								return (
 									<div className='keyboard-key' id={keyboardColor[1][secondRow.indexOf(element)]} key={secondRow.indexOf(element)} onClick={
 										() => {
-											if(currentLine < 5 && currentWord.length < 5) {
+											if(currentLine < 5 && currentWord.length < 5 && solved == false) {
 												setWord((word) => [...word, [element.toUpperCase()]])
 											}
 										}
@@ -234,7 +258,7 @@ function App() {
 									<div className='keyboard-key' id={keyboardColor[2][thirdRow.indexOf(element)]} key={thirdRow.indexOf(element)} onClick={
 										() => {
 											if(element != "enter" && element != "<") {
-												if(currentLine < 5 && currentWord.length < 5) {
+												if(currentLine < 5 && currentWord.length < 5 && solved == false) {
 													setWord((word) => [...word, [element.toUpperCase()]])
 												}
 											}

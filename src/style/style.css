@@ -8,16 +8,37 @@ header {
     margin : 0;
     padding: 0;
     text-align: center;
+    height: fit-content;
+    border-bottom: 0.1px solid grey; 
+
 }
-header h1 { 
+header .title { 
+    position: relative;
     margin: auto;
-    padding: 0.8% 0%;
+    padding: 0.8% 0;
     color: white;  
     font-size: 1.6rem;
     width: 100vw;
 }
-header {
-    border-bottom: 0.1px solid grey; 
+header .setting {
+    position: absolute;
+    right: 1%;
+    top: 0.5%;
+    padding: 0.8% 0.6%;
+    align-items: center;
+    height: 100%;
+    font-size: 25px;
+    color: white;
+    cursor: pointer;
+}
+header .setting i {
+    margin-left: 10px;
+    transition: 0.5s;
+    opacity: 1;
+}
+header .setting i:hover {
+    transition: 0.5s;
+    opacity: .8;
 }
 .alert {
     transition: 0.8s;
