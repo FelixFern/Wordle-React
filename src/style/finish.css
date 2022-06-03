@@ -9,7 +9,20 @@
     border-radius: 10px;
     transform: translate(-50%, -50%);
 }
-.finish-parent h1 {
+.finish-parent .close-button {
+    position: absolute;
+    transition: 0.5s;
+    line-height: 0;
+    top: 1%;
+    right: 5%;
+    color: white;
+    cursor: pointer;
+}
+.finish-parent .close-button:hover {
+    transition: 0.5s;
+    opacity: 0.5;
+}
+.finish-parent h2 {
     color: white;
     text-align: center;
     padding-top: 20%;

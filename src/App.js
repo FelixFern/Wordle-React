@@ -3,11 +3,12 @@ import './style/keyboard.css'
 
 import { MdLeaderboard, MdLightMode } from "react-icons/md";
 import Box from './components/Box'
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import useState from 'react-usestateref'
 import Alert from './components/Alert';
 import wordList from './words.json'
 import Finish from './components/Finish';
+import { FinishContext } from './contexts/global-state';
 
 
 var checkWord = require('check-if-word'), words = checkWord('en')
@@ -41,14 +42,12 @@ function App() {
 			} 
 		});
 	},[])
-
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
 	const [solved, setSolved, solvedRef] = useState(false) 
 	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
 	const [darkMode, setDarkMode, darkModeToggle] = useState(true)
-
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
@@ -181,6 +180,7 @@ function App() {
 	}
 
 	return (
+		<FinishContext.Provider value={{ finishToggle, setFinish }}>
 		<div className="App">
 			<header>
 				<h1 className='title'>WORDLE</h1>
@@ -200,7 +200,7 @@ function App() {
 			<div className={popupToggle.show ? "alert alert-show" : "alert"}>
 				<Alert
 					text = {popupToggle.text}
-				></Alert>
+					></Alert>
 			</div>
 			<div className={finishToggle ? "finish finish-show" : "finish"}>
 				<div className='darken' onClick={
@@ -210,7 +210,7 @@ function App() {
 				}></div>
 				<Finish
 					
-				></Finish>
+					></Finish>
 			</div>
 			<div className='component'>
 				<div className='text-box'>
@@ -279,6 +279,7 @@ function App() {
 				</div>	
 			</div>
 		</div>
+		</FinishContext.Provider>
 	);
 }
 
