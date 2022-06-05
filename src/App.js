@@ -17,7 +17,6 @@ let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
 
-
 function App() {
 	let guessing_word = ''
 	useEffect(() => {
