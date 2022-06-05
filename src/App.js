@@ -3,15 +3,13 @@ import './style/keyboard.css'
 
 import { MdLeaderboard, MdLightMode } from "react-icons/md";
 import Box from './components/Box'
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect } from 'react'
 import useState from 'react-usestateref'
 import Alert from './components/Alert';
 import wordList from './words.json'
+import guessList from './possible_guess.json'
 import Finish from './components/Finish';
 import { FinishContext } from './contexts/global-state';
-
-
-var checkWord = require('check-if-word'), words = checkWord('en')
 
 let word_list = ['', '', '', '', '']
 let color_list = ['', '', '', '', '']
@@ -33,7 +31,7 @@ function App() {
 		});
 		const timeElapsed = Date.now();
 		const today = new Date(timeElapsed);
-		console.log(words)
+		// console.log(words)
 		wordList.map(word => {
 			// const guessing_word = 
 			if(word.Date == today.toLocaleDateString()) {
@@ -53,7 +51,22 @@ function App() {
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
 
-	function resetWordle() {
+	const checkWord = (check) => {
+		const possible_guess = guessList.words
+		let isInList = false
+		guessList.words.map((guess) => {
+			// console.log(word.toUpperCase())			
+			if(check == guess.toUpperCase()) {
+				isInList = true
+			}
+		})
+		if(isInList) {
+			return true 
+		} else { 
+			return false
+		}
+	}
+	const resetWordle = () => {
 		keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
@@ -63,11 +76,11 @@ function App() {
 		setLine(0)
 	}
 
-	function sleep(ms) {
+	const sleep = (ms) => {
 		return new Promise(resolve => setTimeout(resolve, ms))
 	}
 	async function enterClicked() {
-		if(currentWordRef.current.length == 5 && words.check(currentWordRef.current.join(''))) {
+		if(currentWordRef.current.length == 5 && checkWord(currentWordRef.current.join(''))) {
 			let colors = ""
 			let color = ""
 			currentWordRef.current.map((word, i) => {
@@ -122,8 +135,7 @@ function App() {
 				await sleep(5000)
 				setFinish(true)
 			}
-		} else if (!words.check(currentWordRef.current.join('')) && currentLineRef.current != 5) {
-			console.log(currentLineRef.current == 5)
+		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
 			setPopup({show : false, text : ""})
