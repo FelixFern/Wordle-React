@@ -44,11 +44,25 @@ function App() {
 	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
 	const [darkMode, setDarkMode, darkModeToggle] = useState(true)
+	const [userData, setUserData, userDataRef] = useState()
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
     const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
     const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
-
+	
+	useEffect(() => {
+		console.log(localStorage.getItem('userData'))
+		// if(localStorage.getItem('userData')) {
+		// 	console.log("test")
+		// } else {
+		// 	console.log("test 1")
+		// }
+		let userData = {'line': currentLineRef.current, 'solved':solved}
+		localStorage.setItem('userData', JSON.stringify(userData))
+		let localData = JSON.parse(localStorage.getItem('userData'))
+	}, [solved])
+	
+	
 	const checkWord = (check) => {
 		const possible_guess = guessList.words
 		let isInList = false
@@ -78,30 +92,34 @@ function App() {
 		return new Promise(resolve => setTimeout(resolve, ms))
 	}
 	async function enterClicked() {
-		console.log(guessing_word)
+		// console.log(guessing_word)
 		if(currentWordRef.current.length == 5 && checkWord(currentWordRef.current.join(''))) {
-			console.log('entered')
+			// console.log('entered')
 			let colors = ""
 			let color = ""
+			let tempGuessingWord = guessing_word.split('')
+			console.log(tempGuessingWord)
 			currentWordRef.current.map((word, i) => {
 				color = ""
 				let available = false
 				for(let j = 0; j < 5; j++) {
-					if(word == guessing_word[j].toUpperCase() && i == j) {
+					if(word == tempGuessingWord[j].toUpperCase() && i == j) {
 						color = "G"
 						let {bool, row, ind} = setKeyboardColor(word)
 						if(bool) {
 							keyboardColor[row][ind] = "g"
 						}
+						tempGuessingWord[j] = "+"
 						// console.log(word + "x" + guessing_word[j] + "xG")
 						break
 					}
-					else if(word == guessing_word[j].toUpperCase() && i != j) {
+					else if(word == tempGuessingWord[j].toUpperCase() && i != j) {
 						available = true
 						let {bool, row, ind} = setKeyboardColor(word)
 						if(bool && keyboardColor[row][ind] != "g") {
 							keyboardColor[row][ind] = "y"
 						}
+						tempGuessingWord[j] = "+"
 						// console.log(word + "x" + guessing_word[j] + "xY")
 						color = "Y"
 					}
@@ -116,7 +134,7 @@ function App() {
 				}
 				colors += color
 			})
-			
+			console.log(tempGuessingWord)
 			word_list[currentLineRef.current] = currentWordRef.current
 			color_list[currentLineRef.current] = colors
 			setLine(currentLineRef.current + 1)											
@@ -134,6 +152,7 @@ function App() {
 				setPopup({show : true, text : guessing_word})
 				await sleep(5000)
 				setFinish(true)
+				setSolved(false)
 			}
 		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5) {
 			setPopup({show : true, text : "Not in word list"})

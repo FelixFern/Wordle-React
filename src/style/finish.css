@@ -2,8 +2,8 @@
     z-index: 200;
     position: absolute;
     background-color: rgb(24, 24, 24);
-    width: 30vw;
-    height: 80vh;
+    width: 40vw;
+    height: fit-content;
     top: 50%;
     left: 50%;
     border-radius: 10px;
@@ -22,13 +22,46 @@
     transition: 0.5s;
     opacity: 0.5;
 }
-.finish-parent h2 {
+.finish-parent .title {
     color: white;
     text-align: center;
-    padding-top: 20%;
+    font-size: 20px;
+    padding-top: 30px;
 }
-
-@media only screen and (max-width: 600px) {
+.stats-parent {
+    width: 100%;
+}
+.stats { 
+    width: fit-content;
+    margin: auto;
+    display: flex;
+    color: white;
+    text-align: center;
+    column-gap: 30px;
+}
+.sub-stats h2{ 
+    line-height: 0;
+}
+.sub-stats p { 
+    line-height: 20px;
+    font-size: 14px;
+}
+.guess-dist-title {
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    padding-top: 10px;
+}
+.guess-dist-parent {
+    width: 60%;
+    margin: auto;
+    padding-bottom: 40px;
+}
+.sub-guess-dist p{
+    line-height: 15px;
+    color: white
+}
+@media only screen and (max-width: 1000px) {
     .finish-parent {
         width: 80vw;
     }

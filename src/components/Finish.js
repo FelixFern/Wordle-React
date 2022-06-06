@@ -13,7 +13,48 @@ function Finish(props) {
             }}>
                 <h2>x</h2>
             </div>
-            <h2>STATISTICS</h2>
+            <h1 className='title'>STATISTICS</h1>
+            <div className='stats-parent'>
+                <div className='stats'>
+                    <div className='sub-stats'>
+                        <h2>1</h2>
+                        <p>Played</p>
+                    </div>
+                    <div className='sub-stats'>
+                        <h2>100%</h2>
+                        <p>Win %</p>
+                    </div>
+                    <div className='sub-stats'>
+                        <h2>1</h2>
+                        <p>Current<br/>Streak</p>
+                    </div>
+                    <div className='sub-stats'>
+                        <h2>2</h2>
+                        <p>Max<br/>Streak</p>
+                    </div>
+                </div>
+            </div>
+            <h1 className='guess-dist-title'>GUESSING DISTRIBUTION</h1>
+            <div className='guess-dist-parent'>
+                <div className='guess-dist'>
+                    <div className='sub-guess-dist'>
+                        <p>1</p>
+                    </div>
+                    <div className='sub-guess-dist'>
+                        <p>2</p>
+                    </div>
+                    <div className='sub-guess-dist'>
+                        <p>3</p>
+                    </div>
+                    <div className='sub-guess-dist'>
+                        <p>4</p>
+                    </div>
+                    <div className='sub-guess-dist'>
+                        <p>5</p>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
