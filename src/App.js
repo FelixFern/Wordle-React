@@ -16,9 +16,9 @@ let color_list = ['', '', '', '', '']
 let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
 					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
+let guessing_word = ''
 
 function App() {
-	let guessing_word = ''
 	useEffect(() => {
 		// console.log(englishWordList[0])
 		document.title = ("Wordle Recreated")
@@ -32,7 +32,6 @@ function App() {
 		const today = new Date(timeElapsed);
 		// console.log(words)
 		wordList.map(word => {
-			// const guessing_word = 
 			if(word.Date == today.toLocaleDateString()) {
 				guessing_word = word.Word
 				console.log(guessing_word)
@@ -79,7 +78,9 @@ function App() {
 		return new Promise(resolve => setTimeout(resolve, ms))
 	}
 	async function enterClicked() {
+		console.log(guessing_word)
 		if(currentWordRef.current.length == 5 && checkWord(currentWordRef.current.join(''))) {
+			console.log('entered')
 			let colors = ""
 			let color = ""
 			currentWordRef.current.map((word, i) => {
