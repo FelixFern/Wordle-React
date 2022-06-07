@@ -21,7 +21,7 @@ function Finish(props) {
                         <p>Played</p>
                     </div>
                     <div className='sub-stats'>
-                        <h2>{props.win/props.played * 100}%</h2>
+                        <h2>{(props.win/props.played * 100).toFixed()}%</h2>
                         <p>Win %</p>
                     </div>
                     <div className='sub-stats'>
