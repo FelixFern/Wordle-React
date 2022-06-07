@@ -19,6 +19,18 @@ let keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
 let guessing_word = ''
 
 function App() {
+	const [currentWord, setWord, currentWordRef] = useState([])
+	const [currentLine, setLine, currentLineRef] = useState(0)
+	const [solved, setSolved, solvedRef] = useState(false) 
+	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
+	const [finishToggle, setFinish, finishToggleRef] = useState(false)
+	const [darkMode, setDarkMode, darkModeToggle] = useState(true)
+	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false})
+	
+	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
+	const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
+	const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
+	
 	useEffect(() => {
 		// console.log(englishWordList[0])
 		document.title = ("Wordle Recreated")
@@ -37,30 +49,15 @@ function App() {
 				console.log(guessing_word)
 			} 
 		});
+		const userData = JSON.parse(localStorage.getItem('userData'))
+		if(userData) { 
+			setUserData(userData)
+		}
 	},[])
-	const [currentWord, setWord, currentWordRef] = useState([])
-	const [currentLine, setLine, currentLineRef] = useState(0)
-	const [solved, setSolved, solvedRef] = useState(false) 
-	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
-	const [finishToggle, setFinish, finishToggleRef] = useState(false)
-	const [darkMode, setDarkMode, darkModeToggle] = useState(true)
-	const [userData, setUserData, userDataRef] = useState()
-
-	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
-    const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
-    const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
 	
 	useEffect(() => {
-		console.log(localStorage.getItem('userData'))
-		// if(localStorage.getItem('userData')) {
-		// 	console.log("test")
-		// } else {
-		// 	console.log("test 1")
-		// }
-		let userData = {'line': currentLineRef.current, 'solved':solved}
 		localStorage.setItem('userData', JSON.stringify(userData))
-		let localData = JSON.parse(localStorage.getItem('userData'))
-	}, [solved])
+	}, [userData])
 	
 	
 	const checkWord = (check) => {
@@ -139,6 +136,13 @@ function App() {
 			color_list[currentLineRef.current] = colors
 			setLine(currentLineRef.current + 1)											
 			setWord(word => [])
+
+			let prevUserData = JSON.parse(localStorage.getItem('userData'))
+			let prevGuessDist = prevUserData.guess_dist
+			let prevPrevWin= prevUserData.prev_win
+			let prevCurrentStreak = prevUserData.curr_streak
+			let prevMaxStreak = prevUserData.max_streak
+
 			if(colors == "GGGGG") {
 				setSolved(true)
 				setPopup({show : true, text : "Nice job!"})
@@ -146,6 +150,19 @@ function App() {
 				setPopup({show : false, text : "Nice job!"})
 				await sleep(1000)
 				setFinish(true)
+				
+				prevGuessDist[currentLineRef.current] += 1
+
+				if(prevPrevWin) {
+					prevCurrentStreak += 1
+				} else {
+					prevPrevWin = true
+					prevCurrentStreak += 1
+				}
+				if(prevCurrentStreak > prevMaxStreak) {
+					prevMaxStreak = prevCurrentStreak
+				}
+				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin})
 			}
 			colors = ""
 			if (currentLineRef.current == 5) {
@@ -153,12 +170,21 @@ function App() {
 				await sleep(5000)
 				setFinish(true)
 				setSolved(false)
+
+				if(prevPrevWin) {
+					prevPrevWin = false
+					prevCurrentStreak = 0
+				} else {
+					prevCurrentStreak = 0
+				}
+				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin})
 			}
 		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
 			setPopup({show : false, text : ""})
 		} 
+		
 	}
 
 	function backspaceClicked() {
@@ -240,8 +266,12 @@ function App() {
 					}
 				}></div>
 				<Finish
-					
-					></Finish>
+					win={userData.win}
+					guess_dist={userData.guess_dist}
+					played={userData.played}
+					max_streak={userData.max_streak}
+					curr_streak={userData.curr_streak}	
+				></Finish>
 			</div>
 			<div className='component'>
 				<div className='text-box'>

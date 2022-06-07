@@ -17,19 +17,19 @@ function Finish(props) {
             <div className='stats-parent'>
                 <div className='stats'>
                     <div className='sub-stats'>
-                        <h2>1</h2>
+                        <h2>{props.played}</h2>
                         <p>Played</p>
                     </div>
                     <div className='sub-stats'>
-                        <h2>100%</h2>
+                        <h2>{props.win/props.played * 100}%</h2>
                         <p>Win %</p>
                     </div>
                     <div className='sub-stats'>
-                        <h2>1</h2>
+                        <h2>{props.curr_streak}</h2>
                         <p>Current<br/>Streak</p>
                     </div>
                     <div className='sub-stats'>
-                        <h2>2</h2>
+                        <h2>{props.max_streak}</h2>
                         <p>Max<br/>Streak</p>
                     </div>
                 </div>
