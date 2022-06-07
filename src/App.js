@@ -101,14 +101,15 @@ function App() {
 				let available = false
 				for(let j = 0; j < 5; j++) {
 					if(word == tempGuessingWord[j].toUpperCase() && i == j) {
-						color = "G"
 						let {bool, row, ind} = setKeyboardColor(word)
 						if(bool) {
 							keyboardColor[row][ind] = "g"
 						}
 						tempGuessingWord[j] = "+"
 						// console.log(word + "x" + guessing_word[j] + "xG")
+						color = "G"
 						break
+
 					}
 					else if(word == tempGuessingWord[j].toUpperCase() && i != j) {
 						available = true
@@ -119,6 +120,7 @@ function App() {
 						tempGuessingWord[j] = "+"
 						// console.log(word + "x" + guessing_word[j] + "xY")
 						color = "Y"
+						break
 					}
 					else if(available == false){
 						let {bool, row, ind} = setKeyboardColor(word)
@@ -157,7 +159,7 @@ function App() {
 					prevCurrentStreak += 1
 				} else {
 					prevPrevWin = true
-					prevCurrentStreak += 1
+					prevCurrentStreak = 0
 				}
 				if(prevCurrentStreak > prevMaxStreak) {
 					prevMaxStreak = prevCurrentStreak
@@ -165,7 +167,7 @@ function App() {
 				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin})
 			}
 			colors = ""
-			if (currentLineRef.current == 5) {
+			if (currentLineRef.current == 5 && !solvedRef) {
 				setPopup({show : true, text : guessing_word})
 				await sleep(5000)
 				setFinish(true)
