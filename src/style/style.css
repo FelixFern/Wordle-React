@@ -7,7 +7,6 @@ html {
     position: absolute;
     width: 100vw;
     height: 100vw;
-    background-color: black;
     z-index: -1;
 }
 .bg-dark {
@@ -15,6 +14,12 @@ html {
 }
 .bg-light {
     background-color: white;
+}
+.dark {
+    color: white;
+}
+.light {
+    color: rgb(24, 24, 24);
 }
 #dark {
     color: white;

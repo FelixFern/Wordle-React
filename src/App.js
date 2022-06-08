@@ -184,7 +184,7 @@ function App() {
 		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
-			setPopup({show : false, text : ""})
+			setPopup({show : false, text : "Not in word list"})
 		} 
 		
 	}
@@ -258,7 +258,7 @@ function App() {
 						</MdLightMode></i>
 				</div>
 			</header>
-			<div className={popupToggle.show ? "alert alert-show" : "alert"} id={darkMode ? "dark" : "light"}>
+			<div className={popupToggle.show ? "alert alert-show" : "alert"} id={darkMode ? "dark bg-white" : "light bg-dark"}>
 				<Alert
 					text = {popupToggle.text}
 					></Alert>
