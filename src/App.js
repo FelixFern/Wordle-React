@@ -167,7 +167,9 @@ function App() {
 				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin})
 			}
 			colors = ""
-			if (currentLineRef.current == 5 && !solvedRef) {
+			console.log(currentLineRef.current, solvedRef)
+			if (currentLineRef.current == 5 && !solvedRef.current) {
+				console.log("test")
 				setPopup({show : true, text : guessing_word})
 				await sleep(5000)
 				setFinish(true)
@@ -186,7 +188,6 @@ function App() {
 			await sleep(2500)
 			setPopup({show : false, text : "Not in word list"})
 		} 
-		
 	}
 
 	function backspaceClicked() {
