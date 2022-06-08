@@ -1,8 +1,36 @@
 html { 
-    background-color: rgb(24, 24, 24);
     margin: 0%;
     padding: 0;
     overflow: hidden;
+}
+.background {
+    position: absolute;
+    width: 100vw;
+    height: 100vw;
+    background-color: black;
+    z-index: -1;
+}
+.bg-dark {
+    background-color: rgb(24, 24, 24);
+}
+.bg-light {
+    background-color: white;
+}
+#dark {
+    color: white;
+}
+#light {
+    color: rgb(24, 24, 24);
+}
+#bg-dark {
+    background-color: rgb(24, 24, 24);
+}
+#bg-light {
+    background-color: white;
+}
+.App {
+    width: 100vw;
+    height: 100vh;
 }
 header {
     margin : 0;
@@ -10,7 +38,6 @@ header {
     text-align: center;
     height: fit-content;
     border-bottom: 0.1px solid grey; 
-
 }
 header .title { 
     position: relative;

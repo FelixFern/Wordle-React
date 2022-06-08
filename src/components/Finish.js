@@ -1,11 +1,12 @@
 import React, {useContext} from 'react'
-import { FinishContext } from '../contexts/global-state'
+import { DarkModeContext, FinishContext } from '../contexts/global-state'
 import '../style/finish.css'
 
 function Finish(props) {
     const { finishToggle, setFinish } = useContext(FinishContext)
+    const { darkMode, setDarkMode} = useContext(DarkModeContext)
     return (
-        <div className='finish-parent'>
+        <div className={darkMode ? "finish-parent dark bg-dark" : "finish-parent light bg-light"  }>
             <div className='close-button' onClick={() => {
                 console.log("Exit clicked!")
                 if (finishToggle) { setFinish(false) }
@@ -13,8 +14,8 @@ function Finish(props) {
             }}>
                 <h2>x</h2>
             </div>
-            <h1 className='title'>STATISTICS</h1>
-            <div className='stats-parent'>
+            <h1 className='title' id={darkMode ? "dark" : "light"}>STATISTICS</h1>
+            <div className='stats-parent' id={darkMode ? "dark" : "light"}>
                 <div className='stats'>
                     <div className='sub-stats'>
                         <h2>{props.played}</h2>

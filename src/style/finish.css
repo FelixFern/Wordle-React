@@ -1,8 +1,7 @@
 .finish-parent {
     z-index: 200;
     position: absolute;
-    background-color: rgb(24, 24, 24);
-    width: 40vw;
+    width: 35vw;
     height: fit-content;
     top: 50%;
     left: 50%;
@@ -15,7 +14,6 @@
     line-height: 0;
     top: 1%;
     right: 5%;
-    color: white;
     cursor: pointer;
 }
 .finish-parent .close-button:hover {
@@ -35,7 +33,6 @@
     width: fit-content;
     margin: auto;
     display: flex;
-    color: white;
     text-align: center;
     column-gap: 30px;
 }
@@ -47,7 +44,6 @@
     font-size: 14px;
 }
 .guess-dist-title {
-    color: white;
     text-align: center;
     font-size: 20px;
     padding-top: 10px;
@@ -59,7 +55,6 @@
 }
 .sub-guess-dist p{
     line-height: 15px;
-    color: white
 }
 @media only screen and (max-width: 1000px) {
     .finish-parent {

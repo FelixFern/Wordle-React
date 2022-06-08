@@ -9,7 +9,7 @@ import Alert from './components/Alert';
 import wordList from './words.json'
 import guessList from './possible_guess.json'
 import Finish from './components/Finish';
-import { FinishContext } from './contexts/global-state';
+import { FinishContext, DarkModeContext } from './contexts/global-state';
 
 let word_list = ['', '', '', '', '']
 let color_list = ['', '', '', '', '']
@@ -24,7 +24,7 @@ function App() {
 	const [solved, setSolved, solvedRef] = useState(false) 
 	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
-	const [darkMode, setDarkMode, darkModeToggle] = useState(true)
+	const [darkMode, setDarkMode, darkModeRef] = useState(true)
 	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false})
 	
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
@@ -239,29 +239,31 @@ function App() {
 	}
 
 	return (
+		<DarkModeContext.Provider value={{ darkMode, setDarkMode}}>
 		<FinishContext.Provider value={{ finishToggle, setFinish }}>
-		<div className="App">
-			<header>
-				<h1 className='title'>WORDLE</h1>
-				<div className='setting'>
+		<div className={darkMode ? "background bg-dark" : "background bg-light"} id={darkMode ? "dark bg-dark" : "light bg-light"}></div>
+		<div>
+			<header id={darkMode ? "dark bg-dark" : "light bg-light"}>
+				<h1 className='title' id={darkMode ? "dark" : "light"}>WORDLE</h1>
+				<div className='setting' id={darkMode ? "dark" : "light"}>
 					<i><MdLeaderboard onClick={() => {
 						console.log(finishToggle)
 						if(finishToggle) {setFinish(false)}
 						else {setFinish(true)}
 					}}></MdLeaderboard></i>
 					<i><MdLightMode onClick={() => {
-						if(darkMode) {setFinish(false)}
-						else {setFinish(true)}
+						if(darkMode) {setDarkMode(false)}
+						else {setDarkMode(true)}
 					}}>
 						</MdLightMode></i>
 				</div>
 			</header>
-			<div className={popupToggle.show ? "alert alert-show" : "alert"}>
+			<div className={popupToggle.show ? "alert alert-show" : "alert"} id={darkMode ? "dark" : "light"}>
 				<Alert
 					text = {popupToggle.text}
 					></Alert>
 			</div>
-			<div className={finishToggle ? "finish finish-show" : "finish"}>
+			<div className={finishToggle ? "finish finish-show" : "finish"} id={darkMode ? "dark" : "light"}>
 				<div className='darken' onClick={
 					() => {
 						setFinish(false)
@@ -343,6 +345,7 @@ function App() {
 			</div>
 		</div>
 		</FinishContext.Provider>
+		</DarkModeContext.Provider>
 	);
 }
 
