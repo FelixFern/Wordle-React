@@ -67,6 +67,7 @@
     width: fit-content;
     padding: 5px 20px;
     background-color: #538D4E;
+    border-radius: 5px;
     color: white;
     font-size: 18px;
 }

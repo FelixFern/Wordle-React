@@ -26,7 +26,7 @@ function App() {
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
 	const [darkMode, setDarkMode, darkModeRef] = useState(true)
 	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false, 'last_word':''})
-	const [pastWordle, setPastWordle, pastWordleRef] = useState([['','','','',''], ['','','','','']])
+	const [pastWordle, setPastWordle, pastWordleRef] = useState({'word' : ['','','','',''], 'color' : ['','','','','']})
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
 	const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
@@ -69,7 +69,6 @@ function App() {
 				setFinish(true)
 			}
 		}
-		
 	},[])
 
 	useEffect(() => {
@@ -180,7 +179,7 @@ function App() {
 			if (currentLineRef.current == 5 && !solvedRef.current) {
 				// console.log("test")
 				setPopup({show : true, text : guessing_word})
-				await sleep(5000)
+				await sleep(2500)
 				setFinish(true)
 				setSolved(false)
 				if(prevPrevWin) {
@@ -192,7 +191,7 @@ function App() {
 				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
 				setPastWordle({'word':word_list, 'color':color_list})
 			}
-		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5  || !solvedRef.current) {
+		} else if ((!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5)  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
 			setPopup({show : false, text : "Not in word list"})
@@ -247,7 +246,7 @@ function App() {
 		})
 		return {bool, ind, row}
 	}
-
+	console.log(color_list)
 	return (
 		<DarkModeContext.Provider value={{ darkMode, setDarkMode}}>
 		<FinishContext.Provider value={{ finishToggle, setFinish }}>

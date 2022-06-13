@@ -8,18 +8,36 @@ function Finish(props) {
     const [seconds, setSeconds] = useState()
     const [minutes, setMinutes] = useState()
     const [hours, setHours] = useState()
+    var yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() + 1)
+    const countdownDate = new Date(yesterday.toLocaleDateString()).getTime()
+
     useEffect(() => {
         const now = new Date().getTime()
-        const countdownDate = 100000
-
         const updateDisplay = () => {
             const distance = countdownDate - now;
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            setHours(hours)
-            setMinutes(minutes)
-            setSeconds(seconds)
+
+            if(hours.toString().length == 1) {
+                setHours("0" + hours.toString())
+            } else {
+                setHours(hours)
+            }
+            if(minutes.toString().length == 1) {
+                setMinutes("0" + minutes.toString())
+            } else {
+                setMinutes(minutes)
+            }
+            if(seconds.toString().length == 1) {
+                setSeconds("0" + seconds.toString())
+            } else {
+                setSeconds(seconds)
+            }
+            // setHours(hours)
+            // setMinutes(minutes)
+            // setSeconds(seconds)
         }
         updateDisplay();
         setInterval(updateDisplay, 1000);
