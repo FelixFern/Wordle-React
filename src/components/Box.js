@@ -4,7 +4,8 @@ import '../style/box.css'
 
 function Box(props) {
     const { darkMode, setDarkMode} = useContext(DarkModeContext)
-
+    console.log(props.character)
+    console.log(props.color[0])
     return (
         <div className='box'>
             <div className={props.state ? "box-char " + props.color[0] : "box-char"} id={darkMode ? "dark" : "light"}>

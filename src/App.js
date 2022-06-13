@@ -63,8 +63,8 @@ function App() {
 		// console.log(userData.last_word)
 		if(userData) {
 			if(userData.last_word == guessing_word) {
-				word_list = pastWordle.word
-				color_list = pastWordle.color
+				// word_list = pastWordle.word
+				// color_list = pastWordle.color
 				setSolved(true)
 				setFinish(true)
 			}
@@ -154,6 +154,7 @@ function App() {
 			let prevCurrentStreak = prevUserData.curr_streak
 			let prevMaxStreak = prevUserData.max_streak
 
+			console.log(currentLineRef.current)
 			if(colors == "GGGGG") {
 				setSolved(true)
 				setPopup({show : true, text : "Nice job!"})
@@ -179,21 +180,21 @@ function App() {
 			if (currentLineRef.current == 5 && !solvedRef.current) {
 				// console.log("test")
 				setPopup({show : true, text : guessing_word})
-				await sleep(2500)
+				await sleep(1200)
 				setFinish(true)
 				setSolved(false)
 				if(prevPrevWin) {
 					prevPrevWin = false
-					prevCurrentStreak = 0
+					prevCurrentStreak = 1
 				} else {
-					prevCurrentStreak = 0
+					prevCurrentStreak = 1
 				}
 				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
 				setPastWordle({'word':word_list, 'color':color_list})
 			}
 		} else if ((!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5)  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
-			await sleep(2500)
+			await sleep(1200)
 			setPopup({show : false, text : "Not in word list"})
 		} 
 	}
@@ -246,7 +247,7 @@ function App() {
 		})
 		return {bool, ind, row}
 	}
-	console.log(color_list)
+	console.log(word_list[0])
 	return (
 		<DarkModeContext.Provider value={{ darkMode, setDarkMode}}>
 		<FinishContext.Provider value={{ finishToggle, setFinish }}>
