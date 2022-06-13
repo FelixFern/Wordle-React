@@ -1,10 +1,30 @@
-import React, {useContext} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { DarkModeContext, FinishContext } from '../contexts/global-state'
 import '../style/finish.css'
 
 function Finish(props) {
     const { finishToggle, setFinish } = useContext(FinishContext)
     const { darkMode, setDarkMode} = useContext(DarkModeContext)
+    const [seconds, setSeconds] = useState()
+    const [minutes, setMinutes] = useState()
+    const [hours, setHours] = useState()
+    useEffect(() => {
+        const now = new Date().getTime()
+        const countdownDate = 100000
+
+        const updateDisplay = () => {
+            const distance = countdownDate - now;
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            setHours(hours)
+            setMinutes(minutes)
+            setSeconds(seconds)
+        }
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+    })
+
     return (
         <div className={darkMode ? "finish-parent dark bg-dark" : "finish-parent light bg-light"  }>
             <div className='close-button' onClick={() => {
@@ -22,7 +42,7 @@ function Finish(props) {
                         <p>Played</p>
                     </div>
                     <div className='sub-stats'>
-                        <h2>{(props.win/props.played * 100).toFixed()}%</h2>
+                        <h2>{props.played != 0 ? (props.win/props.played * 100).toFixed() : 0}%</h2>
                         <p>Win %</p>
                     </div>
                     <div className='sub-stats'>
@@ -54,6 +74,16 @@ function Finish(props) {
                         <p>5</p>
                         
                     </div>
+                </div>
+            </div>
+            <div className='countdown-parent'>
+                <h1>Next Word <br></br>Countdown</h1>
+                <div className='countdown'>
+                    <h2>{hours}</h2>
+                    <h2>:</h2>
+                    <h2>{minutes}</h2>
+                    <h2>:</h2>
+                    <h2>{seconds}</h2>
                 </div>
             </div>
         </div>

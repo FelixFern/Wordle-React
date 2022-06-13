@@ -51,11 +51,30 @@
 .guess-dist-parent {
     width: 60%;
     margin: auto;
-    padding-bottom: 40px;
 }
 .sub-guess-dist p{
     line-height: 15px;
 }
+.countdown-parent {
+    width: 65%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: space-around;
+}
+.countdown-parent h1{
+    width: fit-content;
+    padding: 5px 20px;
+    background-color: #538D4E;
+    color: white;
+    font-size: 18px;
+}
+.countdown {
+    display: flex;
+}
+
+
 @media only screen and (max-width: 1000px) {
     .finish-parent {
         width: 80vw;

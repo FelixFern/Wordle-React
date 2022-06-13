@@ -25,12 +25,15 @@ function App() {
 	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
 	const [darkMode, setDarkMode, darkModeRef] = useState(true)
-	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false})
-	
+	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false, 'last_word':''})
+	const [pastWordle, setPastWordle, pastWordleRef] = useState([['','','','',''], ['','','','','']])
+
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
 	const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
 	const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
+
 	
+
 	useEffect(() => {
 		// console.log(englishWordList[0])
 		document.title = ("Wordle Recreated")
@@ -53,12 +56,29 @@ function App() {
 		if(userData) { 
 			setUserData(userData)
 		}
+		const pastWordle = JSON.parse(localStorage.getItem('pastWordle'))
+		if(pastWordle) { 
+			setPastWordle(pastWordle)
+		}
+		// console.log(userData.last_word)
+		if(userData) {
+			if(userData.last_word == guessing_word) {
+				word_list = pastWordle.word
+				color_list = pastWordle.color
+				setSolved(true)
+				setFinish(true)
+			}
+		}
+		
 	},[])
-	
+
 	useEffect(() => {
 		localStorage.setItem('userData', JSON.stringify(userData))
 	}, [userData])
-	
+
+	useEffect(() => {
+		localStorage.setItem('pastWordle', JSON.stringify(pastWordle))
+	}, [pastWordle])
 	
 	const checkWord = (check) => {
 		const possible_guess = guessList.words
@@ -75,16 +95,6 @@ function App() {
 			return false
 		}
 	}
-	const resetWordle = () => {
-		keyboardColor = [['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'],
-					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n'], 
-					['n', 'n', 'n', 'n', 'n', 'n', 'n', 'n', 'n']]
-		word_list = ['', '', '', '', '']
-		color_list = ['', '', '', '', '']
-		setWord(word => [])
-		setLine(0)
-	}
-
 	const sleep = (ms) => {
 		return new Promise(resolve => setTimeout(resolve, ms))
 	}
@@ -95,7 +105,7 @@ function App() {
 			let colors = ""
 			let color = ""
 			let tempGuessingWord = guessing_word.split('')
-			console.log(tempGuessingWord)
+			// console.log(tempGuessingWord)
 			currentWordRef.current.map((word, i) => {
 				color = ""
 				let available = false
@@ -133,7 +143,7 @@ function App() {
 				}
 				colors += color
 			})
-			console.log(tempGuessingWord)
+			// console.log(tempGuessingWord)
 			word_list[currentLineRef.current] = currentWordRef.current
 			color_list[currentLineRef.current] = colors
 			setLine(currentLineRef.current + 1)											
@@ -164,26 +174,26 @@ function App() {
 				if(prevCurrentStreak > prevMaxStreak) {
 					prevMaxStreak = prevCurrentStreak
 				}
-				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin})
+				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
+				setPastWordle({'word':word_list, 'color':color_list})
 			}
 			colors = ""
-			console.log(currentLineRef.current, solvedRef)
 			if (currentLineRef.current == 5 && !solvedRef.current) {
-				console.log("test")
+				// console.log("test")
 				setPopup({show : true, text : guessing_word})
 				await sleep(5000)
 				setFinish(true)
 				setSolved(false)
-
 				if(prevPrevWin) {
 					prevPrevWin = false
 					prevCurrentStreak = 0
 				} else {
 					prevCurrentStreak = 0
 				}
-				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin})
+				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
+				setPastWordle({'word':word_list, 'color':color_list})
 			}
-		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5) {
+		} else if (!checkWord(currentWordRef.current.join('')) || currentLineRef.current != 5  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
 			setPopup({show : false, text : "Not in word list"})
@@ -197,13 +207,13 @@ function App() {
 	}
 
 	function keyboardInput(alphabet) {
-		if(alphabet != "Enter" && alphabet != "Backspace" && solvedRef.current == false) {
+		if(alphabet != "Enter" && alphabet != "Backspace" && !solvedRef.current && !finishToggleRef.current) {
 			if(currentLine < 5 && currentWordRef.current.length < 5) {
 				setWord((word) => [...word, [alphabet.toUpperCase()]])
 			}
-		} else if(alphabet == "Enter") {
+		} else if(alphabet == "Enter" && !solvedRef.current && !finishToggleRef.current) {
 			enterClicked()
-		} else if (alphabet == "Backspace") {
+		} else if (alphabet == "Backspace" && !solvedRef.current && !finishToggleRef.current) {
 			backspaceClicked()
 		}
 	}
@@ -248,7 +258,7 @@ function App() {
 				<h1 className='title' id={darkMode ? "dark" : "light"}>WORDLE</h1>
 				<div className='setting' id={darkMode ? "dark" : "light"}>
 					<i><MdLeaderboard onClick={() => {
-						console.log(finishToggle)
+						// console.log(finishToggle)
 						if(finishToggle) {setFinish(false)}
 						else {setFinish(true)}
 					}}></MdLeaderboard></i>
