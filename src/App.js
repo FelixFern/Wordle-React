@@ -160,7 +160,6 @@ function App() {
 				setPopup({show : true, text : "Nice job!"})
 				await sleep(2500)
 				setPopup({show : false, text : "Nice job!"})
-				await sleep(1000)
 				setFinish(true)
 				
 				prevGuessDist[currentLineRef.current] += 1
@@ -193,7 +192,7 @@ function App() {
 				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
 				setPastWordle({'word':word_list, 'color':color_list})
 			}
-		} else if (!checkWord(currentWordRef.current.join('')) || currentLineRef.current != 5  || !solvedRef.current) {
+		} else if (!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(2500)
 			setPopup({show : false, text : "Not in word list"})
