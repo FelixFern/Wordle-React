@@ -3,9 +3,7 @@ import { DarkModeContext } from '../contexts/global-state'
 import '../style/box.css'
 
 function Box(props) {
-    const { darkMode, setDarkMode} = useContext(DarkModeContext)
-    console.log(props.character)
-    console.log(props.color[0])
+    const { darkMode, setDarkMode } = useContext(DarkModeContext)
     return (
         <div className='box'>
             <div className={props.state ? "box-char " + props.color[0] : "box-char"} id={darkMode ? "dark" : "light"}>
@@ -23,9 +21,8 @@ function Box(props) {
             <div className={props.state ? "box-char " + props.color[4] : "box-char"} id={darkMode ? "dark" : "light"}>
                 <p>{props.character[4]}</p>
             </div>
-
         </div>
-  )
+    )
 }
 
 export default Box

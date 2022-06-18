@@ -35,9 +35,6 @@ function Finish(props) {
             } else {
                 setSeconds(seconds)
             }
-            // setHours(hours)
-            // setMinutes(minutes)
-            // setSeconds(seconds)
         }
         updateDisplay();
         setInterval(updateDisplay, 1000);

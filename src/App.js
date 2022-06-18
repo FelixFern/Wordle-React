@@ -26,13 +26,11 @@ function App() {
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
 	const [darkMode, setDarkMode, darkModeRef] = useState(true)
 	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false, 'last_word':''})
-	const [pastWordle, setPastWordle, pastWordleRef] = useState({'word' : ['','','','',''], 'color' : ['','','','','']})
+	const [pastWordle, setPastWordle, pastWordleRef] = useState({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
 	const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
 	const thirdRow = ['enter', 'z', 'x', 'c', 'v', 'b', 'n', 'm', '<']
-
-	
 
 	useEffect(() => {
 		// console.log(englishWordList[0])
@@ -49,7 +47,7 @@ function App() {
 		wordList.map(word => {
 			if(word.Date == today.toLocaleDateString()) {
 				guessing_word = word.Word
-				console.log(guessing_word)
+				// console.log(guessing_word)
 			} 
 		});
 		const userData = JSON.parse(localStorage.getItem('userData'))
@@ -59,6 +57,7 @@ function App() {
 		const pastWordle = JSON.parse(localStorage.getItem('pastWordle'))
 		if(pastWordle) { 
 			setPastWordle(pastWordle)
+			setLine(pastWordle.curr_line)
 		}
 		// console.log(userData.last_word)
 		if(userData) {
@@ -145,6 +144,7 @@ function App() {
 			// console.log(tempGuessingWord)
 			word_list[currentLineRef.current] = currentWordRef.current
 			color_list[currentLineRef.current] = colors
+			setPastWordle({'word' : word_list, 'color' : color_list, 'curr_line' : currentLineRef.current + 1})
 			setLine(currentLineRef.current + 1)											
 			setWord(word => [])
 
@@ -156,13 +156,14 @@ function App() {
 
 			console.log(currentLineRef.current)
 			if(colors == "GGGGG") {
+				console.log("TESTS")
 				setSolved(true)
 				setPopup({show : true, text : "Nice job!"})
-				await sleep(2500)
+				await sleep(200)
 				setPopup({show : false, text : "Nice job!"})
 				setFinish(true)
 				
-				prevGuessDist[currentLineRef.current] += 1
+				prevGuessDist[currentLineRef.current - 1] += 1
 
 				if(prevPrevWin) {
 					prevCurrentStreak += 1
@@ -174,13 +175,12 @@ function App() {
 					prevMaxStreak = prevCurrentStreak
 				}
 				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
-				setPastWordle({'word':word_list, 'color':color_list})
 			}
 			colors = ""
 			if (currentLineRef.current == 5 && !solvedRef.current) {
 				// console.log("test")
 				setPopup({show : true, text : guessing_word})
-				await sleep(1200)
+				await sleep(1000)
 				setFinish(true)
 				setSolved(false)
 				if(prevPrevWin) {
@@ -190,11 +190,10 @@ function App() {
 					prevCurrentStreak = 1
 				}
 				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
-				setPastWordle({'word':word_list, 'color':color_list})
 			}
 		} else if ((!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5)  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
-			await sleep(1200)
+			await sleep(1000)
 			setPopup({show : false, text : "Not in word list"})
 		} 
 	}
@@ -247,7 +246,6 @@ function App() {
 		})
 		return {bool, ind, row}
 	}
-	console.log(word_list[0])
 	return (
 		<DarkModeContext.Provider value={{ darkMode, setDarkMode}}>
 		<FinishContext.Provider value={{ finishToggle, setFinish }}>
@@ -289,11 +287,11 @@ function App() {
 			</div>
 			<div className='component'>
 				<div className='text-box'>
-					<Box character={currentLine == 0 ? currentWord : word_list[0]} state={currentLine > 0 ? true : false} color={color_list[0]}></Box>
-					<Box character={currentLine == 1 ? currentWord : word_list[1]} state={currentLine > 1 ? true : false} color={color_list[1]}></Box>
-					<Box character={currentLine == 2 ? currentWord : word_list[2]} state={currentLine > 2 ? true : false} color={color_list[2]}></Box>
-					<Box character={currentLine == 3 ? currentWord : word_list[3]} state={currentLine > 3 ? true : false} color={color_list[3]}></Box>
-					<Box character={currentLine == 4 ? currentWord : word_list[4]} state={currentLine > 4 ? true : false} color={color_list[4]}></Box>
+					<Box character={currentLine == 0 ? currentWord : pastWordle.word[0]} state={currentLine > 0 ? true : false} color={pastWordle.color[0]}></Box>
+					<Box character={currentLine == 1 ? currentWord : pastWordle.word[1]} state={currentLine > 1 ? true : false} color={pastWordle.color[1]}></Box>
+					<Box character={currentLine == 2 ? currentWord : pastWordle.word[2]} state={currentLine > 2 ? true : false} color={pastWordle.color[2]}></Box>
+					<Box character={currentLine == 3 ? currentWord : pastWordle.word[3]} state={currentLine > 3 ? true : false} color={pastWordle.color[3]}></Box>
+					<Box character={currentLine == 4 ? currentWord : pastWordle.word[4]} state={currentLine > 4 ? true : false} color={pastWordle.color[4]}></Box>
 				</div>
 				<div className='keyboard-component'>
 					<div className='keyboard'>
