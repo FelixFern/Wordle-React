@@ -40,6 +40,18 @@ function Finish(props) {
         setInterval(updateDisplay, 1000);
     })
 
+    let guessDist_data = ['','','','','']
+    
+    const addGuessDist = (arr) => {
+        arr.map(data => {
+            for(let i = 0; i < data; i++) {
+                guessDist_data[props.guess_dist.indexOf(data)] += "x"
+            }
+        })
+        
+    }
+    addGuessDist(props.guess_dist)
+    console.log(guessDist_data)
     return (
         <div className={darkMode ? "finish-parent dark bg-dark" : "finish-parent light bg-light"  }>
             <div className='close-button' onClick={() => {
@@ -74,20 +86,34 @@ function Finish(props) {
             <div className='guess-dist-parent'>
                 <div className='guess-dist'>
                     <div className='sub-guess-dist'>
-                        <p>1</p>
+                        <p>1 :</p>
+                        <div className='gap'></div>
+                        <p className='data'>{guessDist_data[0]}</p>         
+                        <p>{props.guess_dist[0]}</p>        
                     </div>
                     <div className='sub-guess-dist'>
-                        <p>2</p>
+                        <p>2 :</p>
+                        <div className='gap'></div>
+                        <p className='data'>{guessDist_data[1]}</p>         
+                        <p>{props.guess_dist[1]}</p>        
                     </div>
                     <div className='sub-guess-dist'>
-                        <p>3</p>
+                        <p>3 :</p>
+                        <div className='gap'></div>
+                        <p className='data'>{guessDist_data[2]}</p>         
+                        <p>{props.guess_dist[2]}</p>        
                     </div>
                     <div className='sub-guess-dist'>
-                        <p>4</p>
+                        <p>4 :</p>
+                        <div className='gap'></div>
+                        <p className='data'>{guessDist_data[3]}</p>         
+                        <p>{props.guess_dist[3]}</p>        
                     </div>
                     <div className='sub-guess-dist'>
-                        <p>5</p>
-                        
+                        <p>5 :</p>
+                        <div className='gap'></div>
+                        <p className='data'>{guessDist_data[4]}</p>         
+                        <p>{props.guess_dist[4]}</p>        
                     </div>
                 </div>
             </div>

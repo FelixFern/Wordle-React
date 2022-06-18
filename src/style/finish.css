@@ -52,6 +52,20 @@
     width: 60%;
     margin: auto;
 }
+.sub-guess-dist {
+    display: flex;
+    align-items: center;
+}
+.sub-guess-dist .gap { 
+    width: 10px;
+    height: 20px;
+}
+.sub-guess-dist .data { 
+    background-color: white;
+    width: fit-content;
+    height: fit-content;
+    margin-right: 5px;
+}
 .sub-guess-dist p{
     line-height: 15px;
 }
