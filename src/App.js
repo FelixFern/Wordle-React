@@ -66,6 +66,8 @@ function App() {
 				// color_list = pastWordle.color
 				setSolved(true)
 				setFinish(true)
+			} else if (userData.last_word != guessing_word && solvedRef.current) {
+				setPastWordle({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
 			}
 		}
 	},[])
@@ -159,7 +161,7 @@ function App() {
 				console.log("TESTS")
 				setSolved(true)
 				setPopup({show : true, text : "Nice job!"})
-				await sleep(200)
+				await sleep(1000)
 				setPopup({show : false, text : "Nice job!"})
 				setFinish(true)
 				
@@ -182,7 +184,7 @@ function App() {
 				setPopup({show : true, text : guessing_word})
 				await sleep(1000)
 				setFinish(true)
-				setSolved(false)
+				setSolved(true)
 				if(prevPrevWin) {
 					prevPrevWin = false
 					prevCurrentStreak = 1
