@@ -47,7 +47,7 @@ function App() {
 		wordList.map(word => {
 			if(word.Date == today.toLocaleDateString()) {
 				guessing_word = word.Word
-				// console.log(guessing_word)
+				console.log(guessing_word)
 			} 
 		});
 		const userData = JSON.parse(localStorage.getItem('userData'))
@@ -66,7 +66,7 @@ function App() {
 				// color_list = pastWordle.color
 				setSolved(true)
 				setFinish(true)
-			} else if (userData.last_word != guessing_word && solvedRef.current) {
+			} else if (userData.last_word != guessing_word) {
 				setPastWordle({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
 			}
 		}
@@ -161,7 +161,7 @@ function App() {
 				console.log("TESTS")
 				setSolved(true)
 				setPopup({show : true, text : "Nice job!"})
-				await sleep(1000)
+				await sleep(500)
 				setPopup({show : false, text : "Nice job!"})
 				setFinish(true)
 				
@@ -182,7 +182,7 @@ function App() {
 			if (currentLineRef.current == 5 && !solvedRef.current) {
 				// console.log("test")
 				setPopup({show : true, text : guessing_word})
-				await sleep(1000)
+				await sleep(500)
 				setFinish(true)
 				setSolved(true)
 				if(prevPrevWin) {
@@ -195,7 +195,7 @@ function App() {
 			}
 		} else if ((!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5)  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
-			await sleep(1000)
+			await sleep(500)
 			setPopup({show : false, text : "Not in word list"})
 		} 
 	}
