@@ -8,6 +8,7 @@ import useState from 'react-usestateref'
 import Alert from './components/Alert';
 import wordList from './words.json'
 import guessList from './possible_guess.json'
+import englishWord from './english_word.json'
 import Finish from './components/Finish';
 import { FinishContext, DarkModeContext } from './contexts/global-state';
 
@@ -47,7 +48,8 @@ function App() {
 		wordList.map(word => {
 			if(word.Date == today.toLocaleDateString()) {
 				guessing_word = word.Word
-				console.log(guessing_word)
+				// guessing_word = 'tests'
+				// console.log(guessing_word)
 			} 
 		});
 		const userData = JSON.parse(localStorage.getItem('userData'))
@@ -68,6 +70,7 @@ function App() {
 				setFinish(true)
 			} else if (userData.last_word != guessing_word) {
 				setPastWordle({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
+				setLine(0)
 			}
 		}
 	},[])
@@ -81,9 +84,8 @@ function App() {
 	}, [pastWordle])
 	
 	const checkWord = (check) => {
-		const possible_guess = guessList.words
 		let isInList = false
-		guessList.words.map((guess) => {
+		englishWord.words.map((guess) => {
 			// console.log(word.toUpperCase())			
 			if(check == guess.toUpperCase()) {
 				isInList = true
@@ -156,7 +158,6 @@ function App() {
 			let prevCurrentStreak = prevUserData.curr_streak
 			let prevMaxStreak = prevUserData.max_streak
 
-			console.log(currentLineRef.current)
 			if(colors == "GGGGG") {
 				console.log("TESTS")
 				setSolved(true)

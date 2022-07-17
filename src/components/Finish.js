@@ -4,7 +4,7 @@ import '../style/finish.css'
 
 function Finish(props) {
     const { finishToggle, setFinish } = useContext(FinishContext)
-    const { darkMode, setDarkMode} = useContext(DarkModeContext)
+    const { darkMode, setDarkMode } = useContext(DarkModeContext)
     const [seconds, setSeconds] = useState()
     const [minutes, setMinutes] = useState()
     const [hours, setHours] = useState()
@@ -51,7 +51,6 @@ function Finish(props) {
         
     }
     addGuessDist(props.guess_dist)
-    console.log(guessDist_data)
     return (
         <div className={darkMode ? "finish-parent dark bg-dark" : "finish-parent light bg-light"  }>
             <div className='close-button' onClick={() => {
