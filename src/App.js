@@ -23,11 +23,11 @@ function App() {
 	const [currentWord, setWord, currentWordRef] = useState([])
 	const [currentLine, setLine, currentLineRef] = useState(0)
 	const [solved, setSolved, solvedRef] = useState(false) 
-	const [popupToggle, setPopup, popupToggleRef] = useState({show : false, text : ''})
+	const [popupToggle, setPopup] = useState({show : false, text : ''})
 	const [finishToggle, setFinish, finishToggleRef] = useState(false)
-	const [darkMode, setDarkMode, darkModeRef] = useState(true)
-	const [userData, setUserData, userDataRef] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false, 'last_word':''})
-	const [pastWordle, setPastWordle, pastWordleRef] = useState({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
+	const [darkMode, setDarkMode] = useState(true)
+	const [userData, setUserData] = useState({'win': 0, 'guess_dist': [0,0,0,0,0], 'played': 0, 'max_streak': 0, 'curr_streak': 0, 'prev_win': false, 'last_word':''})
+	const [pastWordle, setPastWordle] = useState({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
 
 	const firstRow = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p']
 	const secondRow = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
@@ -37,7 +37,7 @@ function App() {
 		// console.log(englishWordList[0])
 		document.title = ("Wordle Recreated")
 		window.addEventListener('keydown', e => {
-			if((e.keyCode >= 65 && e.keyCode <= 90) || e.key == "Enter" || e.key == "Backspace") {
+			if((e.keyCode >= 65 && e.keyCode <= 90) || e.key === "Enter" || e.key === "Backspace") {
 				keyboardInput(e.key, currentWord)
 			}
 			// console.log(e.key)
@@ -46,7 +46,7 @@ function App() {
 		const today = new Date(timeElapsed);
 		// console.log(words)
 		wordList.map(word => {
-			if(word.Date == today.toLocaleDateString()) {
+			if(word.Date === today.toLocaleDateString()) {
 				guessing_word = word.Word
 				// guessing_word = 'tests'
 				// console.log(guessing_word)
@@ -63,12 +63,12 @@ function App() {
 		}
 		// console.log(userData.last_word)
 		if(userData) {
-			if(userData.last_word == guessing_word) {
+			if(userData.last_word === guessing_word) {
 				// word_list = pastWordle.word
 				// color_list = pastWordle.color
 				setSolved(true)
 				setFinish(true)
-			} else if (userData.last_word != guessing_word) {
+			} else if (userData.last_word !== guessing_word) {
 				setPastWordle({'word' : ['','','','',''], 'color' : ['','','','',''], 'curr_line' : 0})
 				setLine(0)
 			}
@@ -87,7 +87,7 @@ function App() {
 		let isInList = false
 		englishWord.words.map((guess) => {
 			// console.log(word.toUpperCase())			
-			if(check == guess.toUpperCase()) {
+			if(check === guess.toUpperCase()) {
 				isInList = true
 			}
 		})
@@ -102,7 +102,7 @@ function App() {
 	}
 	async function enterClicked() {
 		// console.log(guessing_word)
-		if(currentWordRef.current.length == 5 && checkWord(currentWordRef.current.join(''))) {
+		if(currentWordRef.current.length === 5 && checkWord(currentWordRef.current.join(''))) {
 			// console.log('entered')
 			let colors = ""
 			let color = ""
@@ -112,7 +112,7 @@ function App() {
 				color = ""
 				let available = false
 				for(let j = 0; j < 5; j++) {
-					if(word == tempGuessingWord[j].toUpperCase() && i == j) {
+					if(word === tempGuessingWord[j].toUpperCase() && i === j) {
 						let {bool, row, ind} = setKeyboardColor(word)
 						if(bool) {
 							keyboardColor[row][ind] = "g"
@@ -123,10 +123,10 @@ function App() {
 						break
 
 					}
-					else if(word == tempGuessingWord[j].toUpperCase() && i != j) {
+					else if(word === tempGuessingWord[j].toUpperCase() && i !== j) {
 						available = true
 						let {bool, row, ind} = setKeyboardColor(word)
-						if(bool && keyboardColor[row][ind] != "g") {
+						if(bool && keyboardColor[row][ind] !== "g") {
 							keyboardColor[row][ind] = "y"
 						}
 						tempGuessingWord[j] = "+"
@@ -134,7 +134,7 @@ function App() {
 						color = "Y"
 						break
 					}
-					else if(available == false){
+					else if(available === false){
 						let {bool, row, ind} = setKeyboardColor(word)
 						if(bool) {
 							keyboardColor[row][ind] = "N"
@@ -158,7 +158,7 @@ function App() {
 			let prevCurrentStreak = prevUserData.curr_streak
 			let prevMaxStreak = prevUserData.max_streak
 
-			if(colors == "GGGGG") {
+			if(colors === "GGGGG") {
 				console.log("TESTS")
 				setSolved(true)
 				setPopup({show : true, text : "Nice job!"})
@@ -180,7 +180,7 @@ function App() {
 				setUserData({'win': prevUserData.win + 1, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
 			}
 			colors = ""
-			if (currentLineRef.current == 5 && !solvedRef.current) {
+			if (currentLineRef.current === 5 && !solvedRef.current) {
 				// console.log("test")
 				setPopup({show : true, text : guessing_word})
 				await sleep(500)
@@ -194,7 +194,7 @@ function App() {
 				}
 				setUserData({'win': prevUserData.win, 'guess_dist': prevGuessDist, 'played': prevUserData.played + 1, 'max_streak' : prevMaxStreak, 'curr_streak': prevCurrentStreak, 'prev_win': prevPrevWin, 'last_word': guessing_word})
 			}
-		} else if ((!checkWord(currentWordRef.current.join('')) && currentLineRef.current != 5)  || !solvedRef.current) {
+		} else if ((!checkWord(currentWordRef.current.join('')) && currentLineRef.current !== 5)  || !solvedRef.current) {
 			setPopup({show : true, text : "Not in word list"})
 			await sleep(500)
 			setPopup({show : false, text : "Not in word list"})
@@ -208,13 +208,13 @@ function App() {
 	}
 
 	function keyboardInput(alphabet) {
-		if(alphabet != "Enter" && alphabet != "Backspace" && !solvedRef.current && !finishToggleRef.current) {
+		if(alphabet !== "Enter" && alphabet !== "Backspace" && !solvedRef.current && !finishToggleRef.current) {
 			if(currentLine < 5 && currentWordRef.current.length < 5) {
 				setWord((word) => [...word, [alphabet.toUpperCase()]])
 			}
-		} else if(alphabet == "Enter" && !solvedRef.current && !finishToggleRef.current) {
+		} else if(alphabet === "Enter" && !solvedRef.current && !finishToggleRef.current) {
 			enterClicked()
-		} else if (alphabet == "Backspace" && !solvedRef.current && !finishToggleRef.current) {
+		} else if (alphabet === "Backspace" && !solvedRef.current && !finishToggleRef.current) {
 			backspaceClicked()
 		}
 	}
@@ -224,7 +224,7 @@ function App() {
 		let row = 0
 		let ind = -1
 		firstRow.forEach((n, i) => {
-			if(n.toUpperCase() == alphabet) {
+			if(n.toUpperCase() === alphabet) {
 				bool = true
 				row = 0
 				ind = i
@@ -232,7 +232,7 @@ function App() {
 			}
 		})
 		secondRow.forEach((n, i) => {
-			if(n.toUpperCase() == alphabet) {
+			if(n.toUpperCase() === alphabet) {
 				bool = true
 				row = 1
 				ind = i
@@ -240,7 +240,7 @@ function App() {
 			}
 		})
 		thirdRow.forEach((n, i) => {
-			if(n.toUpperCase() == alphabet) {
+			if(n.toUpperCase() === alphabet) {
 				bool = true
 				row = 2
 				ind = i
@@ -290,11 +290,11 @@ function App() {
 			</div>
 			<div className='component'>
 				<div className='text-box'>
-					<Box character={currentLine == 0 ? currentWord : pastWordle.word[0]} state={currentLine > 0 ? true : false} color={pastWordle.color[0]}></Box>
-					<Box character={currentLine == 1 ? currentWord : pastWordle.word[1]} state={currentLine > 1 ? true : false} color={pastWordle.color[1]}></Box>
-					<Box character={currentLine == 2 ? currentWord : pastWordle.word[2]} state={currentLine > 2 ? true : false} color={pastWordle.color[2]}></Box>
-					<Box character={currentLine == 3 ? currentWord : pastWordle.word[3]} state={currentLine > 3 ? true : false} color={pastWordle.color[3]}></Box>
-					<Box character={currentLine == 4 ? currentWord : pastWordle.word[4]} state={currentLine > 4 ? true : false} color={pastWordle.color[4]}></Box>
+					<Box character={currentLine === 0 ? currentWord : pastWordle.word[0]} state={currentLine > 0 ? true : false} color={pastWordle.color[0]}></Box>
+					<Box character={currentLine === 1 ? currentWord : pastWordle.word[1]} state={currentLine > 1 ? true : false} color={pastWordle.color[1]}></Box>
+					<Box character={currentLine === 2 ? currentWord : pastWordle.word[2]} state={currentLine > 2 ? true : false} color={pastWordle.color[2]}></Box>
+					<Box character={currentLine === 3 ? currentWord : pastWordle.word[3]} state={currentLine > 3 ? true : false} color={pastWordle.color[3]}></Box>
+					<Box character={currentLine === 4 ? currentWord : pastWordle.word[4]} state={currentLine > 4 ? true : false} color={pastWordle.color[4]}></Box>
 				</div>
 				<div className='keyboard-component'>
 					<div className='keyboard'>
@@ -303,7 +303,7 @@ function App() {
 								return (
 									<div className='keyboard-key' id={keyboardColor[0][firstRow.indexOf(element)]} key={firstRow.indexOf(element)} onClick={
 										() => {
-											if(currentLine < 5 && currentWord.length < 5 && solved == false) {
+											if(currentLine < 5 && currentWord.length < 5 && solved === false) {
 												setWord((word) => [...word, element.toUpperCase()])
 											}
 										}
@@ -318,7 +318,7 @@ function App() {
 								return (
 									<div className='keyboard-key' id={keyboardColor[1][secondRow.indexOf(element)]} key={secondRow.indexOf(element)} onClick={
 										() => {
-											if(currentLine < 5 && currentWord.length < 5 && solved == false) {
+											if(currentLine < 5 && currentWord.length < 5 && solved === false) {
 												setWord((word) => [...word, [element.toUpperCase()]])
 											}
 										}
@@ -333,15 +333,15 @@ function App() {
 								return (
 									<div className='keyboard-key' id={keyboardColor[2][thirdRow.indexOf(element)]} key={thirdRow.indexOf(element)} onClick={
 										() => {
-											if(element != "enter" && element != "<") {
-												if(currentLine < 5 && currentWord.length < 5 && solved == false) {
+											if(element !== "enter" && element !== "<") {
+												if(currentLine < 5 && currentWord.length < 5 && solved === false) {
 													setWord((word) => [...word, [element.toUpperCase()]])
 												}
 											}
-											else if(element == "<") {
+											else if(element === "<") {
 												backspaceClicked()
 											}
-											else if(element == "enter") {
+											else if(element === "enter") {
 												enterClicked()
 											} 
 										}
